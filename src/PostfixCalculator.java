@@ -10,9 +10,9 @@ public class PostfixCalculator<E>{
     boolean isInt2;
     Object operatorObj;
     String operatorStr;
-    Object int1Obj;
+    String int1Obj;
     int int1;
-    Object int2Obj;
+    String int2Obj;
     int int2;
 
     public void setEquation(int length, String str){
@@ -26,8 +26,9 @@ public class PostfixCalculator<E>{
     public PostfixCalculator(){}
 
     public void doOperation(){
-        while(main.size() >= 1){
+        while(main.size() > 0){
             System.out.println("doing operation");
+            System.out.println(main.peek());
             if(main.peek().toString().equals("+") || main.peek().toString().equals("-") || main.peek().toString().equals("*") || main.peek().toString().equals("/")){
                 isOperator = true;
                 operatorObj = main.peek();
@@ -36,8 +37,8 @@ public class PostfixCalculator<E>{
             }
             temp.push(main.pop());
             try{
-                int1Obj = main.peek();
-                int1 = (int) int1Obj;
+                int1Obj = main.peek().toString();
+                int1 = Integer.parseInt(int1Obj);
                 isInt1 = true;
                 System.out.println("first int");
             }
@@ -46,8 +47,8 @@ public class PostfixCalculator<E>{
             }
             temp.push(main.pop());
             try{
-                int2Obj = main.peek();
-                int2 = (int) int2Obj;
+                int2Obj = main.peek().toString();
+                int2 = Integer.parseInt(int2Obj);
                 isInt2 = true;
                 System.out.println("second int");
             }
@@ -61,6 +62,7 @@ public class PostfixCalculator<E>{
                 temp.pop();
                 if(operatorStr.equals("+")){
                     temp.push(int1 + int2);
+                    System.out.println("did operation");
                 }
                 if(operatorStr.equals("-")){
                     temp.push(int1 - int2);
@@ -77,20 +79,23 @@ public class PostfixCalculator<E>{
                 main.push(temp.pop());
                 main.push(temp.pop());
             }
+            if(main.peek().toString().equals("4")){
+                temp.push(main.pop());
+                System.out.println("this happend");
+            }
         }
-        temp.push(main.pop());
         for(int i = 0; i < temp.size(); i++){
             main.push(temp.pop());
         }
     }
 
     public void Calculate(){
-        while(main.size() >= 1){
+        while(main.size() > 1){
             doOperation();
 
             System.out.println("Loop");
         }
-        System.out.println((int) main.peek());
+        System.out.println(main.peek());
     }
 
 }
