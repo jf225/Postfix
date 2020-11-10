@@ -4,137 +4,93 @@ public class PostfixCalculator<E>{
     Scanner s = new Scanner(System.in);
     public Stack main = new Stack();
     public Stack temp = new Stack();
-    private Stack a;
-    private Stack b;
-    private boolean isFliped = false;
-    private boolean calcFinished = false;
-    private int answer;
+    String[] input;
+    boolean isOperator;
+    boolean isInt1;
+    boolean isInt2;
+    Object operatorObj;
+    String operatorStr;
+    Object int1Obj;
+    int int1;
+    Object int2Obj;
+    int int2;
 
+    public void setEquation(int length, String str){
+        input = new String[length];
+        input = str.split(" ");
+        for(int i = 0; i < input.length; i++){
+            main.push(input[i]);
+        }
+    }
 
     public PostfixCalculator(){}
 
-    public void fixOrder(){
-        if(a.peek().getClass() == "string".getClass()){
-            System.out.println("Order already fixed");
-        }
-        if(a.isEmpty()){
-            System.out.println("Stack is empty");
-        }
-        else{
-            do{
-                b.push(a.pop());
-            }while(!a.isEmpty());
-        }
-        if(isFliped){
-            main = b;
-            temp = a;
-        }
-        else{
-            main = a;
-            temp = b;
-        }
-    }
-
-    public void setStacks(){
-        if(!main.isEmpty()){
-            a = main;
-            b = temp;
-            isFliped = false;
-        }
-        else{
-            a = temp;
-            b = main;
-            isFliped = true;
-        }
-    }
-
-    public void isEmpty(){
-        if(main.size() <= 1 && temp.size() <= 1){
-            calcFinished = true;
-        }
-        else{
-            calcFinished = false;
-        }
-    }
-
-    public void addEquation(){
-        System.out.println("Give the length of the equation: ");
-        int length = s.nextInt();
-        System.out.println("Give Equation: ");
-        for(int i = 0; i < length; i++){
-            main.push(s.next());
-        }
-    }
-
-    public int doOperation(){
-        boolean foundOperator = false;
-        boolean foundInt1 = false;
-        boolean foundInt2 = false;
-
-        Object operator = "temp";
-        Object int1 = 0;
-        Object int2 = 0;
-
-        int permint1 = (int) int1;
-        int permint2 = (int) int2;
-
-        int answer = 0;
-        do{
-            foundOperator = false;
-            foundInt1 = false;
-            foundInt2 = false;
-            if(a.peek() == "+" || a.peek() == "-" || a.peek() == "*" || a.peek() == "/"){
-                foundOperator = true;
-                operator = a.peek();
+    public void doOperation(){
+        while(main.size() >= 1){
+            System.out.println("doing operation");
+            if(main.peek().toString().equals("+") || main.peek().toString().equals("-") || main.peek().toString().equals("*") || main.peek().toString().equals("/")){
+                isOperator = true;
+                operatorObj = main.peek();
+                operatorStr = operatorObj.toString();
+                System.out.println("Operator Found");
             }
-            b.push(a.pop());
-            if(a.peek().getClass() == int.class){
-                foundInt1 = true;
-                int1 = a.peek();
+            temp.push(main.pop());
+            try{
+                int1Obj = main.peek();
+                int1 = (int) int1Obj;
+                isInt1 = true;
+                System.out.println("first int");
             }
-            b.push(a.pop());
-            if(a.peek().getClass() == int.class){
-                foundInt2 = true;
-                int2 = a.peek();
+            catch(Exception e){
+                isInt1 = false;
             }
-            b.push(a.pop());
-            if(foundOperator && foundInt1 && foundInt2){
-                b.pop();
-                b.pop();
-                b.pop();
-                operator.toString();
-                if ("+".equals(operator)) { answer = permint1 + permint2; }
-                if ("-".equals(operator)) { answer = permint1 - permint2;  }
-                if ("*".equals(operator)) { answer = permint1 * permint2;  }
-                if ("/".equals(operator)) { answer = permint1 / permint2;  }
-                b.push(answer);
+            temp.push(main.pop());
+            try{
+                int2Obj = main.peek();
+                int2 = (int) int2Obj;
+                isInt2 = true;
+                System.out.println("second int");
             }
-        }while(!foundOperator && !foundInt1 && !foundInt2);
-        isEmpty();
-        return answer;
-    }
-
-    public void findAnswer(){
-        if(calcFinished){
-            if(main.isEmpty()){
-                answer = (int) temp.peek();
+            catch(Exception e){
+                isInt2 = false;
+            }
+            temp.push(main.pop());
+            if(isOperator && isInt1 && isInt2){
+                temp.pop();
+                temp.pop();
+                temp.pop();
+                if(operatorStr.equals("+")){
+                    temp.push(int1 + int2);
+                }
+                if(operatorStr.equals("-")){
+                    temp.push(int1 - int2);
+                }
+                if(operatorStr.equals("*")){
+                    temp.push(int1 * int2);
+                }
+                if(operatorStr.equals("/")){
+                    temp.push(int1 / int2);
+                }
+                System.out.println("doign operation");
             }
             else{
-                answer = (int) main.peek();
+                main.push(temp.pop());
+                main.push(temp.pop());
             }
+        }
+        temp.push(main.pop());
+        for(int i = 0; i < temp.size(); i++){
+            main.push(temp.pop());
         }
     }
 
-    public int calculate(){
-        addEquation();
-        do {
-            setStacks();
+    public void Calculate(){
+        while(main.size() >= 1){
             doOperation();
-            setStacks();
-            fixOrder();
-        } while(!calcFinished);
-        findAnswer();
-        return answer;
+
+            System.out.println("Loop");
+        }
+        System.out.println((int) main.peek());
     }
 
 }
