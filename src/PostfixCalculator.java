@@ -15,7 +15,7 @@ public class PostfixCalculator<E>{
     String int2Obj;
     int int2;
 
-    public void setEquation(int length, String str){
+    public void setEquation(int length, String str){ //reads in equation and removes spaces
         input = new String[length];
         input = str.split(" ");
         for(int i = 0; i < input.length; i++){
@@ -25,10 +25,14 @@ public class PostfixCalculator<E>{
 
     public PostfixCalculator(){}
 
-    public void doOperation(){
-        while(main.size() > 0){
+    public String doOperation(){ //does the Postfix calculations
+        String answer = "";
+        while(true){
             System.out.println("doing operation");
             System.out.println(main.peek());
+            isOperator = false;
+            isInt1 = false;
+            isInt2 = false;
             if(main.peek().toString().equals("+") || main.peek().toString().equals("-") || main.peek().toString().equals("*") || main.peek().toString().equals("/")){
                 isOperator = true;
                 operatorObj = main.peek();
@@ -55,8 +59,12 @@ public class PostfixCalculator<E>{
             catch(Exception e){
                 isInt2 = false;
             }
+            System.out.println(isOperator);
+            System.out.println(isInt1);
+            System.out.println(isInt2);
+
             temp.push(main.pop());
-            if(isOperator && isInt1 && isInt2){
+            if(isOperator && isInt1 && isInt2){ //if in the order operation int int when popping
                 temp.pop();
                 temp.pop();
                 temp.pop();
@@ -65,37 +73,45 @@ public class PostfixCalculator<E>{
                     System.out.println("did operation");
                 }
                 if(operatorStr.equals("-")){
-                    temp.push(int1 - int2);
+                    temp.push(int2 - int1);
                 }
                 if(operatorStr.equals("*")){
                     temp.push(int1 * int2);
                 }
                 if(operatorStr.equals("/")){
-                    temp.push(int1 / int2);
+                    temp.push(int2 / int1);
                 }
                 System.out.println("doign operation");
+                System.out.println(temp.size());
+                System.out.println(main.size());
+
+
+                while(temp.size() > 0){ //push everything from temp back into main
+                    main.push(temp.pop());
+                }
+                System.out.println(main.peek());
             }
-            else{
+            else{ //pop 2 of the 3 elements from temp back into main
+                System.out.println("we in else");
                 main.push(temp.pop());
                 main.push(temp.pop());
             }
-            if(main.peek().toString().equals("4")){
-                temp.push(main.pop());
-                System.out.println("this happend");
+
+            if(main.size() == 1) //operation done
+            {
+                System.out.println(main.peek());
+                answer = main.pop().toString();
+                break;
             }
+
         }
-        for(int i = 0; i < temp.size(); i++){
-            main.push(temp.pop());
-        }
+        return answer;
     }
 
-    public void Calculate(){
-        while(main.size() > 1){
-            doOperation();
-
-            System.out.println("Loop");
-        }
-        System.out.println(main.peek());
+    public String Calculate(){ //a very useful method, don't question it
+        String answer = doOperation();
+        System.out.println("Answer: " + answer);
+        return answer;
     }
 
 }
