@@ -1,4 +1,4 @@
-/* Dhruv Sharma, Jim Fahey, Jack Greco
+/* Dhruv Sharma
 10/01/2020
 12/15/2020
 This is the file that defines the base Stack class that is used in PostfixCalculator.java.
