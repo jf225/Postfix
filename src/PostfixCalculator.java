@@ -1,3 +1,9 @@
+/* Dhruv Sharma, Jim Fahey, Jack Greco
+10/01/2020
+12/15/2020
+This is the main file that defines the PostfixCalculator class and solves equations in Postfix notation.
+*/
+
 import java.util.Scanner;
 
 public class PostfixCalculator<E>{
