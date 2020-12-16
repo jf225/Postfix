@@ -1,3 +1,8 @@
+/* Dhruv Sharma, Jim Fahey, Jack Greco
+10/01/2020
+12/15/2020
+This is the file that defines the base Stack class that is used in PostfixCalculator.java.
+*/
 public class Stack<E> {
     private int size = 0;
     private StackNode topNode = new StackNode();
