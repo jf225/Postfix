@@ -1,3 +1,9 @@
+/* Dhruv Sharma
+10/01/2020
+12/15/2020
+This is the file that arranges the node structure to be used by Stack.java.
+*/
+
 public class StackNode<E> {
     private E data;
     private StackNode lowerStack;
